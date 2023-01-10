@@ -1,0 +1,8 @@
+newmtl Marble_Green
+map_Pm C:/Users/ddrap/RTS Course/Assets/Other/Packages/Marble PBR Material/Textures/Marble_roughness.png
+bump C:/Users/ddrap/RTS Course/Assets/Other/Packages/Marble PBR Material/Textures/Marble_normal.png
+disp C:/Users/ddrap/RTS Course/Assets/Other/Packages/Marble PBR Material/Textures/Marble_Height.png
+map_Kd C:/Users/ddrap/RTS Course/Assets/Other/Packages/Marble PBR Material/Textures/Marble_green_basecolor.png
+Kd 1 1 1
+d 1
+

@@ -1,18 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerInput : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    NetworkManager network;
+    GameObject playerBase;
+
+    #region Server
+
+    [Command]
+    void CmdSpawnBase()
     {
-        
+        SpawnBase();
     }
 
-    // Update is called once per frame
-    void Update()
+    [Server]
+    void SpawnBase()
     {
-        
+        Debug.Log(network);
+        playerBase = Instantiate(network.spawnPrefabs[0], transform.position, Quaternion.identity);
+        NetworkServer.Spawn(playerBase, gameObject);
     }
+
+    #endregion
+
+
+    #region Client
+
+    void Start() 
+    {
+        if(!isOwned) return;
+
+        network = FindObjectOfType<NetworkManager>();
+        CmdSpawnBase();
+    }
+
+    #endregion
 }
