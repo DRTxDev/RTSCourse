@@ -7,17 +7,34 @@ public class UnitSpawner : NetworkBehaviour
 {
     NetworkManager network;
 
-    GameObject unit;
+    [SerializeField] Transform spawnLocation = null;
+
+    #region Server
+
+    [Command]
+    void CmdSpawnUnit()
+    {
+        GameObject unit = Instantiate(FindObjectOfType<NetworkManager>().spawnPrefabs[1], spawnLocation.position, Quaternion.identity);
+        SpawnUnit(unit);
+    }
+
+    [Server]
+    void SpawnUnit(GameObject unit)
+    {
+        NetworkServer.Spawn(unit, connectionToClient);
+    }
+
+
+    #endregion
 
     #region Client
 
     [ClientCallback]
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.W))
+        if(isOwned && Input.GetKeyDown(KeyCode.W))
         {
-            unit = Instantiate(network.spawnPrefabs[1], transform.position, Quaternion.identity);
-            NetworkServer.Spawn(unit, gameObject);
+            CmdSpawnUnit();
         }
     }
 

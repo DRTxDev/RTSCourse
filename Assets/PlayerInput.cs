@@ -6,21 +6,19 @@ using Mirror;
 public class PlayerInput : NetworkBehaviour
 {
     NetworkManager network;
-    GameObject playerBase;
 
     #region Server
 
     [Command]
     void CmdSpawnBase()
     {
-        SpawnBase();
+        GameObject playerBase = Instantiate(FindObjectOfType<NetworkManager>().spawnPrefabs[0], transform.position, Quaternion.identity);
+        SpawnBase(playerBase);
     }
 
     [Server]
-    void SpawnBase()
+    void SpawnBase(GameObject playerBase)
     {
-        Debug.Log(network);
-        playerBase = Instantiate(network.spawnPrefabs[0], transform.position, Quaternion.identity);
         NetworkServer.Spawn(playerBase, gameObject);
     }
 
@@ -34,6 +32,7 @@ public class PlayerInput : NetworkBehaviour
         if(!isOwned) return;
 
         network = FindObjectOfType<NetworkManager>();
+
         CmdSpawnBase();
     }
 

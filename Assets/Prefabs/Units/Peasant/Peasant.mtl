@@ -1,0 +1,7 @@
+newmtl BlackWhite_Marble_1
+map_Pm C:/Users/ddrap/RTS Course/Assets/Other/Packages/Material Pack - Marble (4K)/Textures/BlackWhite_Marble/BlackWhite_Marble_MetallicSmooth.png
+bump C:/Users/ddrap/RTS Course/Assets/Other/Packages/Material Pack - Marble (4K)/Textures/BlackWhite_Marble/BlackWhite_Marble_Norm.png
+map_Kd C:/Users/ddrap/RTS Course/Assets/Other/Packages/Material Pack - Marble (4K)/Textures/BlackWhite_Marble/BlackWhite_Marble_Albedo.png
+Kd 1 1 1
+d 1
+
