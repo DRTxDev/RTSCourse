@@ -13,22 +13,29 @@ public class UnitSelectionHandler : MonoBehaviour
     Vector2 startPosition;
     RTSPlayer player;
 
+    [Header("DragBox Settings")]
+    [Tooltip("Minimum SizeDelta height or width size of DragBox before activation")]
+    [SerializeField] float minimumSize = 0.1f;
+    [Tooltip("Extra width and height of dragbox")]
+    [SerializeField] float additionalAreaThreshold;
+    Vector2 additionalAreaVector;
+
     #region Client
 
     void Start()
     {
-        player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+        //player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+        additionalAreaVector = new Vector2(additionalAreaThreshold, additionalAreaThreshold);
     }
 
     void Update()
     {
+        if(player == null)
+            player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            
         if(Mouse.current.leftButton.wasPressedThisFrame)
         {
             StartSelectionArea();
-
-
-
-            //Start AOESelectorArea
         }
 
         else if(Mouse.current.leftButton.wasReleasedThisFrame)
@@ -60,23 +67,65 @@ public class UnitSelectionHandler : MonoBehaviour
 
     void UpdateSelectionArea()
     {
-        
+        Vector2 currentMousePosition = Mouse.current.position.ReadValue();
+
+        float areaWidth = currentMousePosition.x - startPosition.x;
+        float areaHeight = currentMousePosition.y - startPosition.y;
+
+        if(Mathf.Abs(areaHeight) <= minimumSize || 
+            Mathf.Abs(areaWidth) <= minimumSize) return;
+
+        dragBox.sizeDelta = new Vector2(Mathf.Abs(areaWidth), Mathf.Abs(areaHeight));
+        dragBox.anchoredPosition = startPosition + new Vector2(areaWidth / 2, areaHeight / 2);
     }
 
     void ClearSelectionArea()
     {
+        dragBox.gameObject.SetActive(false);
+
+        if (dragBox.sizeDelta.magnitude == 0)
+        {
+            ClickSelect();
+
+            return;
+        }
+
+        ProcessSeclectionArea();
+
+        dragBox.sizeDelta = Vector2.zero;
+    }
+
+    void ProcessSeclectionArea()
+    {
+        Vector2 min = dragBox.anchoredPosition - (dragBox.sizeDelta / 2) - additionalAreaVector;
+        Vector2 max = dragBox.anchoredPosition + (dragBox.sizeDelta / 2) + additionalAreaVector;
+
+        foreach (Unit unit in player.GetUnits)
+        {
+            Vector2 pos = Camera.main.WorldToScreenPoint(unit.transform.position);
+
+            if (pos.x > min.x && pos.x < max.x && pos.y > min.y && pos.y < max.y)
+            {
+                selectedUnits.Add(unit);
+                unit.Select();
+            }
+        }
+    }
+
+    void ClickSelect()
+    {
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-        if(Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
             hit.collider.TryGetComponent<Unit>(out Unit unit);
 
-            if(unit is not null && unit.isOwned)
+            if (unit is not null && unit.isOwned)
             {
                 selectedUnits.Add(unit);
             }
 
-            foreach(Unit selectedUnit in selectedUnits)
+            foreach (Unit selectedUnit in selectedUnits)
             {
                 selectedUnit.Select();
             }

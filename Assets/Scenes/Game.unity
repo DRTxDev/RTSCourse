@@ -58446,6 +58446,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1750926239}
     m_Modifications:
+    - target: {fileID: 1508190475632395904, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.15294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508190475632395904, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.9811321
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508190475632395904, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.5836992
+      objectReference: {fileID: 0}
+    - target: {fileID: 1508190475632395904, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2726703785219874779, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
         type: 3}
       propertyPath: m_Name
@@ -58479,32 +58499,32 @@ PrefabInstance:
     - target: {fileID: 4173662540733916836, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4173662540733916836, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4173662540733916836, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4173662540733916836, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4173662540733916836, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4173662540733916836, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4173662540733916836, guid: ebb7a0ccfe1ea2e449000ed98df8221a,
         type: 3}

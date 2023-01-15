@@ -8,6 +8,8 @@ public class RTSPlayer : NetworkBehaviour
 
     List<Unit> myUnits = new List<Unit>();
 
+    public List<Unit> GetUnits { get { return myUnits; } }
+
     #region Server
 
     public override void OnStartServer()

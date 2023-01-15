@@ -12,12 +12,13 @@ GameObject:
   - component: {fileID: 8193434281295819625}
   - component: {fileID: 3714629157880848330}
   - component: {fileID: 6151413630722135018}
+  - component: {fileID: -4495386017971727538}
   m_Layer: 0
   m_Name: CastleObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3703868738783744580
 Transform:
@@ -82,6 +83,22 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   spawnLocation: {fileID: 601503403537759712}
+--- !u!208 &-4495386017971727538
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5480262510985363214}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.175, y: 0.125, z: 0.175}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0.125, z: 0}
+  m_TimeToStationary: 0
 --- !u!1001 &4125345335939668817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -149,6 +166,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Castle
       objectReference: {fileID: 0}
+    - target: {fileID: 7781495350793108796, guid: 5db03819b691ac04d9ab104ee1ecbab8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5db03819b691ac04d9ab104ee1ecbab8, type: 3}
 --- !u!4 &47642584485062912 stripped
@@ -169,6 +191,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnLocation
       objectReference: {fileID: 0}
+    - target: {fileID: 4812106196325038386, guid: 0ef82721ad66981408a83da2cca86da6,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7861854378593566506, guid: 0ef82721ad66981408a83da2cca86da6,
         type: 3}
       propertyPath: m_RootOrder
@@ -187,7 +214,7 @@ PrefabInstance:
     - target: {fileID: 7861854378593566506, guid: 0ef82721ad66981408a83da2cca86da6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.229
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7861854378593566506, guid: 0ef82721ad66981408a83da2cca86da6,
         type: 3}
