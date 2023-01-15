@@ -1,32 +1,66 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class UnitSelectionHandler : MonoBehaviour
 {
     List<Unit> selectedUnits = new List<Unit>();
+    [SerializeField] RectTransform dragBox;
+
+    Vector2 startPosition;
+    RTSPlayer player;
 
     #region Client
+
+    void Start()
+    {
+        player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+    }
 
     void Update()
     {
         if(Mouse.current.leftButton.wasPressedThisFrame)
         {
-            foreach(Unit selectedUnit in selectedUnits)
-            {
-                selectedUnit.Deselect();
-            }
+            StartSelectionArea();
 
-            selectedUnits.Clear();
+
 
             //Start AOESelectorArea
         }
+
         else if(Mouse.current.leftButton.wasReleasedThisFrame)
         {
             ClearSelectionArea();
         }
+
+        else if(Mouse.current.leftButton.isPressed)
+        {
+            UpdateSelectionArea();
+        }
+    }
+
+    void StartSelectionArea()
+    {
+        foreach (Unit selectedUnit in selectedUnits)
+        {
+            selectedUnit.Deselect();
+        }
+
+        selectedUnits.Clear();
+
+        dragBox.gameObject.SetActive(true);
+
+        startPosition = Mouse.current.position.ReadValue();
+
+        UpdateSelectionArea();
+    }
+
+    void UpdateSelectionArea()
+    {
+        
     }
 
     void ClearSelectionArea()
