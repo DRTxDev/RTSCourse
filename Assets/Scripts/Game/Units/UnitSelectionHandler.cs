@@ -32,7 +32,7 @@ public class UnitSelectionHandler : MonoBehaviour
     {
         if(player == null)
             player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-            
+
         if(Mouse.current.leftButton.wasPressedThisFrame)
         {
             StartSelectionArea();
@@ -51,12 +51,15 @@ public class UnitSelectionHandler : MonoBehaviour
 
     void StartSelectionArea()
     {
-        foreach (Unit selectedUnit in selectedUnits)
+        if(!Input.GetKey(KeyCode.LeftShift))
         {
-            selectedUnit.Deselect();
-        }
+            foreach (Unit selectedUnit in selectedUnits)
+            {
+                selectedUnit.Deselect();
+            }
 
-        selectedUnits.Clear();
+            selectedUnits.Clear();
+        }
 
         dragBox.gameObject.SetActive(true);
 
@@ -102,6 +105,8 @@ public class UnitSelectionHandler : MonoBehaviour
 
         foreach (Unit unit in player.GetUnits)
         {
+            if(selectedUnits.Contains(unit)) continue;
+            
             Vector2 pos = Camera.main.WorldToScreenPoint(unit.transform.position);
 
             if (pos.x > min.x && pos.x < max.x && pos.y > min.y && pos.y < max.y)
@@ -120,14 +125,17 @@ public class UnitSelectionHandler : MonoBehaviour
         {
             hit.collider.TryGetComponent<Unit>(out Unit unit);
 
-            if (unit is not null && unit.isOwned)
+            if(unit is not null && unit.isOwned)
             {
-                selectedUnits.Add(unit);
-            }
+                if(selectedUnits.Contains(unit))
+                    selectedUnits.Remove(unit);
+                else
+                    selectedUnits.Add(unit);
 
-            foreach (Unit selectedUnit in selectedUnits)
-            {
-                selectedUnit.Select();
+                if(!unit.isSelected)
+                    unit.Select();
+                else
+                    unit.Deselect();
             }
         }
     }

@@ -16,6 +16,8 @@ public class Unit : NetworkBehaviour
     public static event Action<Unit> AuthorityOnUnitSpawn;
     public static event Action<Unit> AuthorityOnUnitDespawn;
 
+    public bool isSelected = false;
+
     #region Server
 
     public override void OnStartServer()
@@ -38,6 +40,7 @@ public class Unit : NetworkBehaviour
         if(!isOwned) return;
 
         onSelection?.Invoke();
+        isSelected = true;
     }
 
     [Client]
@@ -46,6 +49,7 @@ public class Unit : NetworkBehaviour
         if(!isOwned) return;
 
         onDeselection?.Invoke();
+        isSelected = false;
     }
 
     public override void OnStartClient()
