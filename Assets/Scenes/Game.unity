@@ -108,14 +108,14 @@ NavMeshSettings:
     serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.025
-    agentHeight: 2
-    agentSlope: 30
-    agentClimb: 0.1
+    agentHeight: 0.05
+    agentSlope: 0
+    agentClimb: 0.05
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 1
-    cellSize: 0.025
+    cellSize: 0.02
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -378,7 +378,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1601480
+  m_Name: pb_Mesh-1923764
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -798,7 +798,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1601490
+  m_Name: pb_Mesh-1923774
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1284,6 +1284,12 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1248175506}
+    - target: {fileID: 1172014376274309654, guid: 3f7cb6ca83c179f45a322b9340ff8650,
+        type: 3}
+      propertyPath: groupMovement
+      value: 
+      objectReference: {fileID: 326764073820290818, guid: 0a473cc4f51e1b541a9a4272cbb73548,
+        type: 3}
     - target: {fileID: 2790715997873943618, guid: 3f7cb6ca83c179f45a322b9340ff8650,
         type: 3}
       propertyPath: sceneId

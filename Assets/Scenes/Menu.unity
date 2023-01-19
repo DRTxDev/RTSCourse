@@ -107,13 +107,13 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.025
-    agentHeight: 2
+    agentRadius: 0.04
+    agentHeight: 0.1
     agentSlope: 30
-    agentClimb: 0.4
+    agentClimb: 0.05
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
-    minRegionArea: 2
+    minRegionArea: 0
     manualCellSize: 1
     cellSize: 0.02
     manualTileSize: 0
@@ -130,7 +130,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh64730
+  m_Name: pb_Mesh-1840398
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -294,7 +294,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh64526
+  m_Name: pb_Mesh-1840408
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -823,7 +823,7 @@ PrefabInstance:
     - target: {fileID: 2339137058222665586, guid: 141c168440b63ca4b9cf5b7aba2ce5d4,
         type: 3}
       propertyPath: m_PathPosition
-      value: 1.705409
+      value: 0.0347999
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 141c168440b63ca4b9cf5b7aba2ce5d4, type: 3}
@@ -848,6 +848,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_VersionIndex
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650414761026459751, guid: 3b854259c0d242a41a6e9f75827495f6,
+        type: 3}
+      propertyPath: m_SelectedEdges.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650414761026459751, guid: 3b854259c0d242a41a6e9f75827495f6,
+        type: 3}
+      propertyPath: m_SelectedFaces.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650414761026459751, guid: 3b854259c0d242a41a6e9f75827495f6,
+        type: 3}
+      propertyPath: m_SelectedVertices.Array.size
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7294637518792361044, guid: 3b854259c0d242a41a6e9f75827495f6,
         type: 3}

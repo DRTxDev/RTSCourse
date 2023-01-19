@@ -10,13 +10,14 @@ public class UnitMovement : NetworkBehaviour
     [SerializeField] NavMeshAgent navAgent;
     [SerializeField] float turnSpeed = 5f;
 
-    Coroutine moveRoutine;
+    Coroutine turnRoutine;
+    Coroutine whileMoving;
 
     #region Server
 
     [Command]
     public void CmdMovePlayer(Vector3 targetPosition)
-    {
+    {   
         if(!NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, 1f, NavMesh.AllAreas)) return;
 
         SetTargetPosition(hit.position);
@@ -29,15 +30,19 @@ public class UnitMovement : NetworkBehaviour
         if(navAgent.CalculatePath(targetPosition, path))
         {
             Vector3[] firstCorner = path.corners;
-            if(moveRoutine is not null)
-                StopCoroutine(moveRoutine);
-            moveRoutine = StartCoroutine(TurnToNextCorner(firstCorner[1], turnSpeed));
+
+            if(turnRoutine is not null)
+                StopCoroutine(turnRoutine);
+            if(whileMoving is not null)
+                StopCoroutine(whileMoving);
+            turnRoutine = StartCoroutine(TurnToNextCorner(firstCorner[1], turnSpeed));
+
             navAgent.destination = targetPosition;
         }
     }
 
     [Server]
-    public IEnumerator TurnToNextCorner(Vector3 target, float turnSpeed)
+    IEnumerator TurnToNextCorner(Vector3 target, float turnSpeed)
     {
         //disables navmesh control of rotation
         navAgent.updateRotation = false;
@@ -66,7 +71,8 @@ public class UnitMovement : NetworkBehaviour
 
         //sets the angle in case of minor discrepancies and returns rotation control back to navmesh
         transform.eulerAngles = targetYAngle;
-        navAgent.updateRotation = true;
+        
+        whileMoving = StartCoroutine(WhileMovingAdjustments());
     }
 
     [Server]
@@ -93,6 +99,18 @@ public class UnitMovement : NetworkBehaviour
         currentYRotation = transform.eulerAngles.y;
         transform.LookAt(target, Vector3.up);
         targetYRotation = transform.eulerAngles.y;
+    }
+
+    [Server]
+    IEnumerator WhileMovingAdjustments()
+    {
+        while(Vector3.Distance(transform.position, navAgent.destination) > navAgent.stoppingDistance)
+        {
+            transform.LookAt(transform.position + navAgent.velocity);
+            yield return null;
+        }
+
+        Debug.Log("Completed");
     }
 
     #endregion
