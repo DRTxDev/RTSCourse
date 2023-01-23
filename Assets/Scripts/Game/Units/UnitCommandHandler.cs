@@ -11,9 +11,8 @@ public class UnitCommandHandler : MonoBehaviour
     [SerializeField] GroupMovementPoints groupMovement;
     [SerializeField] float stoppingDistanceModifierPerUnit = .01f;   
 
-
     #region Client
-
+    
     void Awake()
     {
         unitSelectionHandler = GetComponent<UnitSelectionHandler>();
@@ -24,22 +23,36 @@ public class UnitCommandHandler : MonoBehaviour
     {
         if(Mouse.current.rightButton.wasPressedThisFrame)
         {
-            if(!Physics.Raycast(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), out RaycastHit hit)) return;
+            if (!Physics.Raycast(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), out RaycastHit hit)) return;
 
             List<Unit> units = unitSelectionHandler.GetSelectedUnits();
-            List<Transform> movementPoints = groupMovement.GetMovementPoints(units.Count);
 
-            for(int i = 0; i < units.Count; i++)
+            if(hit.collider.TryGetComponent<Targetable>(out var targetable) && !targetable.isOwned)
             {
-                units[i].GetComponent<NavMeshAgent>().avoidancePriority = 50 - i;
-                units[i].GetComponent<NavMeshAgent>().stoppingDistance = (stoppingDistanceModifierPerUnit * i);
-                units[i].GetComponent<UnitMovement>().CmdMovePlayer(hit.point + movementPoints[i].position);
+                TryTarget(targetable.gameObject, units);
+
+                return;
             }
 
-            // foreach(Unit unit in unitSelectionHandler.GetSelectedUnits())
-            // {
-            //     unit.GetComponent<UnitMovement>().CmdMovePlayer(hit.point);
-            // }
+            TryMove(hit.point, units);
+        }
+    }
+
+    void TryMove(Vector3 target, List<Unit> units)
+    {
+        List<Transform> movementPoints = groupMovement.GetMovementPoints(units.Count);
+
+        for (int i = 0; i < units.Count; i++)
+        {
+            units[i].GetUnitMovement().CmdMoveUnit(target + movementPoints[i].position);
+        }
+    }
+
+    void TryTarget(GameObject target, List<Unit> units)
+    {
+        foreach(Unit unit in units)
+        {
+            unit.GetTargeter().CmdSetTarget(target);
         }
     }
 

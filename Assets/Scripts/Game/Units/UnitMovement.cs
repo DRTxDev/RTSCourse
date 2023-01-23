@@ -8,23 +8,46 @@ using UnityEngine.InputSystem;
 public class UnitMovement : NetworkBehaviour 
 {
     [SerializeField] NavMeshAgent navAgent;
+    [SerializeField] float baseStoppingDistance = 0.025f;
     [SerializeField] float turnSpeed = 5f;
 
+    [Header("Strength of the push when character objects collide")]
+    [SerializeField] float forceStrength;
+    [Tooltip("Push force multiplier if colliding unit does not belong to the same player")]
+    [SerializeField] float enemyForceMultiplier = 2f;
+    [Tooltip("Push force multiplier when either moving to attack, or while attacking")]
+    [SerializeField] float combatStanceMultipler = 0.25f;
+
+    [Header("Temp Attack Range")]
+    [SerializeField] float attackRange = 0.1f;
+
+    Targeter targeter;
     Coroutine turnRoutine;
     Coroutine whileMoving;
 
+    float capsuleColliderRadius;
+
     #region Server
 
-    [Command]
-    public void CmdMovePlayer(Vector3 targetPosition)
-    {   
-        if(!NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, 1f, NavMesh.AllAreas)) return;
+    public override void OnStartServer()
+    {
+        targeter = GetComponent<Targeter>();
+        capsuleColliderRadius = GetComponent<CapsuleCollider>().radius;
+    }
 
-        SetTargetPosition(hit.position);
+    [Command]
+    public void CmdMoveUnit(Vector3 targetPosition)
+    {   
+        targeter.ClearTarget();
+
+        if(!NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, 0.2f, NavMesh.AllAreas)) return;
+
+        navAgent.stoppingDistance = baseStoppingDistance;
+        BeginMoveToPosition(hit.position);
     }
 
     [Server]
-    void SetTargetPosition(Vector3 targetPosition)
+    void BeginMoveToPosition(Vector3 targetPosition)
     {
         NavMeshPath path = new NavMeshPath();
         if(navAgent.CalculatePath(targetPosition, path))
@@ -35,7 +58,10 @@ public class UnitMovement : NetworkBehaviour
                 StopCoroutine(turnRoutine);
             if(whileMoving is not null)
                 StopCoroutine(whileMoving);
-            turnRoutine = StartCoroutine(TurnToNextCorner(firstCorner[1], turnSpeed));
+            if(firstCorner[1] != null)
+                turnRoutine = StartCoroutine(TurnToNextCorner(firstCorner[1], turnSpeed));
+            else
+                whileMoving = StartCoroutine(WhileMovingAdjustments());
 
             navAgent.destination = targetPosition;
         }
@@ -69,7 +95,7 @@ public class UnitMovement : NetworkBehaviour
             yield return null;
         }
 
-        //sets the angle in case of minor discrepancies and returns rotation control back to navmesh
+        //sets the angle in case of minor discrepancies
         transform.eulerAngles = targetYAngle;
         
         whileMoving = StartCoroutine(WhileMovingAdjustments());
@@ -104,13 +130,44 @@ public class UnitMovement : NetworkBehaviour
     [Server]
     IEnumerator WhileMovingAdjustments()
     {
-        while(Vector3.Distance(transform.position, navAgent.destination) > navAgent.stoppingDistance)
+        if(targeter.hasTarget)
+            navAgent.stoppingDistance = attackRange;
+
+        while((transform.position - navAgent.destination).sqrMagnitude > navAgent.stoppingDistance * navAgent.stoppingDistance)
         {
             transform.LookAt(transform.position + navAgent.velocity);
             yield return null;
         }
 
-        Debug.Log("Completed");
+        navAgent.ResetPath();
+    }
+
+    [ServerCallback]
+    void OnTriggerStay(Collider other) 
+    {   
+        float distance = Vector3.Distance(transform.position, other.transform.position);
+        float forceModifier = (capsuleColliderRadius * 2) - distance;
+
+        if(other.TryGetComponent<UnitMovement>(out var otherUnit))
+        {
+            if(!otherUnit.isOwned)
+                forceModifier = forceModifier * enemyForceMultiplier;
+
+            if(otherUnit.TryGetComponent<Targeter>(out var otherUnitTargeter))
+            {
+                if(otherUnitTargeter.hasTarget)
+                    forceModifier = forceModifier / (combatStanceMultipler * 1.5f);
+            }
+        }
+
+        if(targeter.hasTarget)
+        {
+            forceModifier = forceModifier * combatStanceMultipler;
+        }
+
+        if(forceModifier < 0) forceModifier = 0;
+
+        navAgent.Move((transform.position - other.transform.position).normalized * forceModifier * forceStrength);
     }
 
     #endregion
