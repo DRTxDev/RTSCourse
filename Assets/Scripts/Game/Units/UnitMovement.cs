@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 
 public class UnitMovement : NetworkBehaviour 
 {
+    [SerializeField] Animator animator;
     [SerializeField] NavMeshAgent navAgent;
     [SerializeField] float baseStoppingDistance = 0.025f;
     [SerializeField] float turnSpeed = 5f;
@@ -22,16 +23,25 @@ public class UnitMovement : NetworkBehaviour
     [SerializeField] float attackRange = 0.1f;
 
     Targeter targeter;
+    Attack attack;
     Coroutine turnRoutine;
-    Coroutine whileMoving;
+    Coroutine moveRoutine;
+    Coroutine storedAction;
+    NavMeshPath path;
+
+    GameObject target;
 
     float capsuleColliderRadius;
+    bool isRooted;
+    bool canMove => !isRooted;
 
     #region Server
 
     public override void OnStartServer()
     {
+        attack = GetComponent<Attack>();
         targeter = GetComponent<Targeter>();
+        path = new NavMeshPath();
         capsuleColliderRadius = GetComponent<CapsuleCollider>().radius;
     }
 
@@ -39,108 +49,176 @@ public class UnitMovement : NetworkBehaviour
     public void CmdMoveUnit(Vector3 targetPosition)
     {   
         targeter.ClearTarget();
+        target = null;
 
         if(!NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, 0.2f, NavMesh.AllAreas)) return;
 
-        navAgent.stoppingDistance = baseStoppingDistance;
-        BeginMoveToPosition(hit.position);
-    }
-
-    [Server]
-    void BeginMoveToPosition(Vector3 targetPosition)
-    {
-        NavMeshPath path = new NavMeshPath();
-        if(navAgent.CalculatePath(targetPosition, path))
+        if(isRooted)
         {
-            Vector3[] firstCorner = path.corners;
+            if(storedAction is not null)
+                StopCoroutine(storedAction);
 
-            if(turnRoutine is not null)
-                StopCoroutine(turnRoutine);
-            if(whileMoving is not null)
-                StopCoroutine(whileMoving);
-            if(firstCorner[1] != null)
-                turnRoutine = StartCoroutine(TurnToNextCorner(firstCorner[1], turnSpeed));
-            else
-                whileMoving = StartCoroutine(WhileMovingAdjustments());
+            storedAction = StartCoroutine(StoreMoveAction(hit.position));
 
-            navAgent.destination = targetPosition;
-        }
-    }
-
-    [Server]
-    IEnumerator TurnToNextCorner(Vector3 target, float turnSpeed)
-    {
-        //disables navmesh control of rotation
-        navAgent.updateRotation = false;
-
-        //determines current y rotation of character is, and what the target y rotation will be by using lookat(target)
-        float currentYRotation, targetYRotation;
-        GetCurrentAndTargetYRotation(target, out currentYRotation, out targetYRotation);
-
-        //takes both current and target y rotations, determines spread, and modifies the rotation if needed, to prevent rotating the wrong way
-        //returns what the percentage of the movement is based on a 0 - 180 degree turn to maintain uniform turn speed regardless of how far the turn is
-        float spreadPercent = GetAngleSpreadAndModifyRotation(ref currentYRotation, targetYRotation);
-
-        //lerped rotation angle
-        Vector3 targetYAngle = new Vector3();
-        //lerp time variable
-        float timeElapsed = 0;
-
-        //basic lerp loop using turnspeed and spreadpercent variables as modifiers
-        while ((timeElapsed * turnSpeed) / spreadPercent <= 1)
-        {
-            targetYAngle.y = Mathf.Lerp(currentYRotation, targetYRotation, (turnSpeed * timeElapsed) / spreadPercent);
-            transform.eulerAngles = targetYAngle;
-            timeElapsed += Time.deltaTime;
-            yield return null;
+            return;
         }
 
-        //sets the angle in case of minor discrepancies
-        transform.eulerAngles = targetYAngle;
+        BeginMove(hit.position);
+    }
+
+    [Command]
+    public void CmdChaseTarget(GameObject target)
+    {
+        if(!NavMesh.SamplePosition(target.transform.position, out NavMeshHit hit, 0.2f, NavMesh.AllAreas)) return;
+        if(target is null) return;
         
-        whileMoving = StartCoroutine(WhileMovingAdjustments());
-    }
+        SetTarget(target);
 
-    [Server]
-    static float GetAngleSpreadAndModifyRotation(ref float currentYRotation, float targetYRotation)
-    {
-        float spread = currentYRotation - targetYRotation;
+        if(isRooted)
+        {
+            if(storedAction is not null)
+                StopCoroutine(storedAction);
 
-        if (Mathf.Abs(spread) > 180 && spread > 0)
-        {
-            currentYRotation -= 360;
-        }
-        else if (Mathf.Abs(spread) > 180 && spread < 0)
-        {
-            currentYRotation += 360;
+            storedAction = StartCoroutine(StoreMoveAction(hit.position));
+
+            return;
         }
 
-        spread = currentYRotation - targetYRotation;
-        return Mathf.Abs(spread / 180);
+        BeginMove(hit.position);
     }
 
     [Server]
-    void GetCurrentAndTargetYRotation(Vector3 target, out float currentYRotation, out float targetYRotation)
+    void SetTarget(GameObject target)
     {
-        currentYRotation = transform.eulerAngles.y;
-        transform.LookAt(target, Vector3.up);
-        targetYRotation = transform.eulerAngles.y;
+        this.target = target;
     }
 
     [Server]
-    IEnumerator WhileMovingAdjustments()
+    void BeginMove(Vector3 targetPosition)
+    {
+        navAgent.stoppingDistance = GetStoppingDistance();
+
+        StopMovementCoroutines();
+
+        moveRoutine = StartCoroutine(CommitMove(targetPosition));
+    }
+
+    [Server]
+    float GetStoppingDistance()
     {
         if(targeter.hasTarget)
-            navAgent.stoppingDistance = attackRange;
+            return attackRange;
+        else
+            return baseStoppingDistance;
+    }
 
-        while((transform.position - navAgent.destination).sqrMagnitude > navAgent.stoppingDistance * navAgent.stoppingDistance)
+    [Server]
+    IEnumerator CommitMove(Vector3 targetPosition)
+    {
+        float timeElapsed = 1;
+        navAgent.destination = targetPosition;
+        float squaredDistanceToDestination;
+        float squaredStoppingDistance = navAgent.stoppingDistance * navAgent.stoppingDistance;
+        Vector3 moveDestination;
+
+        while(true)
         {
+            moveDestination = targeter.hasTarget? target.transform.position : targetPosition;
+            squaredDistanceToDestination = (transform.position - moveDestination).sqrMagnitude;
+            timeElapsed += Time.deltaTime;
+            animator.SetFloat("speed", navAgent.velocity.magnitude);
+
+            if(squaredDistanceToDestination > squaredStoppingDistance)
+            {
+                if(timeElapsed > 0.1f)
+                {
+                    navAgent.destination = moveDestination;
+                    timeElapsed = 0;
+                }
+            }
+
+            else if(targeter.hasTarget)
+            {
+                attack.TryAttack(target);
+                transform.LookAt(target.transform);
+                //attackTarget
+            }
+
+            else
+            {
+                navAgent.ResetPath();
+                animator.SetFloat("speed", 0f);
+                yield break;
+            }
+
             transform.LookAt(transform.position + navAgent.velocity);
+                
             yield return null;
         }
-
-        navAgent.ResetPath();
     }
+
+    //disabled. needs updating or deletion
+    #region TurnToNextCorner
+
+    // [Server]
+    // IEnumerator TurnToNextCorner(Vector3 target)
+    // {
+    //     //disables navmesh control of rotation
+    //     navAgent.updateRotation = false;
+
+    //     //determines current y rotation of character is, and what the target y rotation will be by using lookat(target)
+    //     float currentYRotation, targetYRotation;
+    //     GetCurrentAndTargetYRotation(target, out currentYRotation, out targetYRotation);
+
+    //     //takes both current and target y rotations, determines spread, and modifies the rotation if needed, to prevent rotating the wrong way
+    //     //returns what the percentage of the movement is based on a 0 - 180 degree turn to maintain uniform turn speed regardless of how far the turn is
+    //     float spreadPercent = GetAngleSpreadAndModifyRotation(ref currentYRotation, targetYRotation);
+
+    //     //lerped rotation angle
+    //     Vector3 targetYAngle = new Vector3();
+    //     //lerp time variable
+    //     float timeElapsed = 0;
+
+    //     //basic lerp loop using turnspeed and spreadpercent variables as modifiers
+    //     while ((timeElapsed * turnSpeed) / spreadPercent <= 1)
+    //     {
+    //         targetYAngle.y = Mathf.Lerp(currentYRotation, targetYRotation, (turnSpeed * timeElapsed) / spreadPercent);
+    //         transform.eulerAngles = targetYAngle;
+    //         timeElapsed += Time.deltaTime;
+    //         yield return null;
+    //     }
+
+    //     //sets the angle in case of minor discrepancies
+    //     transform.eulerAngles = targetYAngle;
+    // }
+
+    // [Server]
+    // static float GetAngleSpreadAndModifyRotation(ref float currentYRotation, float targetYRotation)
+    // {
+    //     float spread = currentYRotation - targetYRotation;
+
+    //     if (Mathf.Abs(spread) > 180 && spread > 0)
+    //     {
+    //         currentYRotation -= 360;
+    //     }
+    //     else if (Mathf.Abs(spread) > 180 && spread < 0)
+    //     {
+    //         currentYRotation += 360;
+    //     }
+
+    //     spread = currentYRotation - targetYRotation;
+    //     return Mathf.Abs(spread / 180);
+    // }
+
+    // [Server]
+    // void GetCurrentAndTargetYRotation(Vector3 target, out float currentYRotation, out float targetYRotation)
+    // {
+    //     currentYRotation = transform.eulerAngles.y;
+    //     transform.LookAt(target, Vector3.up);
+    //     targetYRotation = transform.eulerAngles.y;
+    // }
+
+    #endregion
 
     [ServerCallback]
     void OnTriggerStay(Collider other) 
@@ -170,9 +248,44 @@ public class UnitMovement : NetworkBehaviour
         navAgent.Move((transform.position - other.transform.position).normalized * forceModifier * forceStrength);
     }
 
+    [Server]
+    IEnumerator RootPlayer(float duration)
+    {
+        isRooted = true;
+        navAgent.isStopped = true;
+
+        //Start Root Effect
+
+        yield return new WaitForSeconds(duration);
+
+        //End Root Effect
+
+        isRooted = false;
+        navAgent.isStopped = false;
+    }
+
+    IEnumerator StoreMoveAction(Vector3 position)
+    {
+        yield return new WaitUntil(()=> canMove);
+
+        //if still is holding action
+
+        CommitMove(position);
+    }
+
+    void StopMovementCoroutines()
+    {   
+        if(moveRoutine is not null)
+            StopCoroutine(moveRoutine);
+        if(turnRoutine is not null)
+            StopCoroutine(turnRoutine);
+    }
+
     #endregion
 
     #region Client
 
     #endregion
+
+
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+
 
 
 public class EditorExplosionForceRB : MonoBehaviour
@@ -14,8 +14,6 @@ public class EditorExplosionForceRB : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Numlock))
         {
-            Debug.Log("apply");
-            EditorApplication.isPaused = true;
 
             foreach(Rigidbody rigidBody in GetComponentsInChildren<Rigidbody>())
             {

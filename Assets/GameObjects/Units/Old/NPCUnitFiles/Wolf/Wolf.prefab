@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7290831553259697989}
   - component: {fileID: 2452944071704706977}
   - component: {fileID: 9126495922420279573}
-  - component: {fileID: 6623833027918851091}
   - component: {fileID: 1143385540}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.005
@@ -4624,22 +4623,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &6623833027918851091
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 39569486735644001}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &1143385540
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4666,7 +4649,6 @@ GameObject:
   - component: {fileID: 2884211277085817122}
   - component: {fileID: 7812497542144812999}
   - component: {fileID: 4172233246436124082}
-  - component: {fileID: 3866774243940907300}
   - component: {fileID: 2014214983}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.008
@@ -4770,27 +4752,11 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 35
+  m_VersionIndex: 38
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &3866774243940907300
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 388436203396848273}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &2014214983
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4817,7 +4783,6 @@ GameObject:
   - component: {fileID: 5343989320461988554}
   - component: {fileID: 5110433286631082319}
   - component: {fileID: 8583800167467135829}
-  - component: {fileID: 7408070851390991047}
   - component: {fileID: 1824102523}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.011
@@ -4921,27 +4886,11 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 35
+  m_VersionIndex: 38
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &7408070851390991047
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 910806102405393451}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &1824102523
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4968,7 +4917,6 @@ GameObject:
   - component: {fileID: 7546264016632701834}
   - component: {fileID: 880055106753272020}
   - component: {fileID: 6003313567012857455}
-  - component: {fileID: 3730472952446942548}
   - component: {fileID: 1095015945}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.001
@@ -8867,22 +8815,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &3730472952446942548
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2443958634181826435}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &1095015945
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8909,7 +8841,6 @@ GameObject:
   - component: {fileID: 5441828308124257679}
   - component: {fileID: 2695960639787858430}
   - component: {fileID: 3281342002909915331}
-  - component: {fileID: 6233960359829187108}
   - component: {fileID: 1894201147}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.009
@@ -9013,27 +8944,11 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 35
+  m_VersionIndex: 38
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &6233960359829187108
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3468520636454304855}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &1894201147
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9060,7 +8975,6 @@ GameObject:
   - component: {fileID: 1079114597288912701}
   - component: {fileID: 2066341277691535751}
   - component: {fileID: 5495410681740251568}
-  - component: {fileID: 9036249132601465462}
   - component: {fileID: 1333330446}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.004
@@ -11653,22 +11567,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &9036249132601465462
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4039903465215549167}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &1333330446
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11695,7 +11593,6 @@ GameObject:
   - component: {fileID: 8658710266533109622}
   - component: {fileID: 2919449617601085886}
   - component: {fileID: 4538926312373054976}
-  - component: {fileID: 1882643386042324962}
   - component: {fileID: 908376554}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.003
@@ -11799,27 +11696,11 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 35
+  m_VersionIndex: 38
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &1882643386042324962
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4758076889190474961}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &908376554
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11846,7 +11727,6 @@ GameObject:
   - component: {fileID: 8857571130545945655}
   - component: {fileID: 5761489733796472336}
   - component: {fileID: 5281357400443080559}
-  - component: {fileID: 4895467088849741816}
   - component: {fileID: 1490300427}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.007
@@ -12466,22 +12346,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &4895467088849741816
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5643886301242193532}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &1490300427
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12508,7 +12372,6 @@ GameObject:
   - component: {fileID: 2826209829556723256}
   - component: {fileID: 6676186529829203205}
   - component: {fileID: 4291207103826212528}
-  - component: {fileID: 2025556784903333686}
   - component: {fileID: 229735848}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.006
@@ -12612,27 +12475,11 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 35
+  m_VersionIndex: 38
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &2025556784903333686
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6165139948419397984}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &229735848
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12657,7 +12504,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6289642160090020944}
   - component: {fileID: 7217905131978185574}
-  - component: {fileID: 1439877083}
   m_Layer: 0
   m_Name: fracture
   m_TagString: UnitCollapse
@@ -12713,20 +12559,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1439877083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6630033764784023274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f819ce5d23b60ca4881c59723ec9f884, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  power: 80
-  solidMesh: {fileID: 8406843824976074919}
 --- !u!1 &6998366269689508262
 GameObject:
   m_ObjectHideFlags: 0
@@ -12739,7 +12571,6 @@ GameObject:
   - component: {fileID: 2977318112481964149}
   - component: {fileID: 2025355342260272994}
   - component: {fileID: 2230270484490073640}
-  - component: {fileID: 3743386842617580914}
   - component: {fileID: 813600501}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.002
@@ -15957,22 +15788,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &3743386842617580914
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6998366269689508262}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &813600501
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -16033,7 +15848,6 @@ GameObject:
   - component: {fileID: 1408042156228209937}
   - component: {fileID: 7458394704615088881}
   - component: {fileID: 3962793178971422705}
-  - component: {fileID: 6199315256127228269}
   - component: {fileID: 1177206119}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell
@@ -18558,22 +18372,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &6199315256127228269
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7740647730693171947}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &1177206119
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18600,7 +18398,6 @@ GameObject:
   - component: {fileID: 1180021517872830}
   - component: {fileID: 2815497599695274133}
   - component: {fileID: 1831518688435495393}
-  - component: {fileID: 7960638394001762691}
   - component: {fileID: 1202864219}
   m_Layer: 0
   m_Name: Wolf - Sitting - Manifold.001_cell.010
@@ -20877,22 +20674,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!54 &7960638394001762691
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8851940819520305547}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!64 &1202864219
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -53,6 +53,7 @@ public class UnitCommandHandler : MonoBehaviour
         foreach(Unit unit in units)
         {
             unit.GetTargeter().CmdSetTarget(target);
+            unit.GetUnitMovement().CmdChaseTarget(target);
         }
     }
 
