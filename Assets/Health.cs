@@ -23,32 +23,34 @@ public class Health : NetworkBehaviour
     public override void OnStartServer()
     {
         animator = GetComponent<Animator>();
-        SetHealth(maxHealth);
+        SetCurrentHealthTo(maxHealth);
     }
 
     [Server]
-    void SetHealth(float maxHealth)
+    void SetCurrentHealthTo(float maxHealth)
     {
         currentHealth = maxHealth;
         isAlive = true;
     }
 
     [Server]
-    public void DamageHealth(float damageAmount)
+    public bool ReduceHealthBy(float damageAmount)
     {
         currentHealth -= damageAmount;
 
         if(currentHealth <= 0)
         {
             Die();
-            return;
+            return true;
         }
 
         ServerOnDamagedEvent?.Invoke();
         //onDamagedAnimation
         //onDamageEffects -- dust effect at random place on mesh? collider? 
+        return false;
     } 
 
+    [Server]
     void Die()
     {
         animator.SetTrigger("die");

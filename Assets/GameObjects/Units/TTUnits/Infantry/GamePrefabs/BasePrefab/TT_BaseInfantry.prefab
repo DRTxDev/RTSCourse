@@ -220,8 +220,6 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  animator: {fileID: 9589574}
-  navAgent: {fileID: -4287490391834365599}
   baseStoppingDistance: 0.025
   turnSpeed: 5
   forceStrength: 1
@@ -274,7 +272,9 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  animator: {fileID: 9589574}
+  netAnimator: {fileID: 5469292381893836694}
+  targeter: {fileID: 3775360070268125339}
+  attackDamage: 10
   attackSpeed: 2
 --- !u!114 &4143326843341904794
 MonoBehaviour:
@@ -288,6 +288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a60dc08dee5ef45900967987216f4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1001 &871538713289052513
 PrefabInstance:
   m_ObjectHideFlags: 0

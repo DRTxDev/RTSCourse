@@ -1,34 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 using Mirror;
 
 public class Attack : NetworkBehaviour
 {
-    [SerializeField] Animator animator;
+    NetworkAnimator netAnimator;
+    Targeter targeter;
     [SerializeField] float attackDamage = 10f;
 
     //Temporary
-    [SerializeField] float attackSpeed = 2f;
+    [SerializeField] float attackSpeedModifier = 2f;
+    float attackSpeed;
+
     float timeSinceLastAttack = 0;
-    bool attackInProgress;
 
     GameObject currentTarget;
 
     [Server]
-    public void TryAttack(GameObject target)
+    public override void OnStartServer()
     {
-        if(!attackInProgress && CanAttack())
-        {
+        targeter = GetComponent<Targeter>();
+        netAnimator = GetComponent<NetworkAnimator>();
 
-            animator.SetTrigger("attack");
+        Debug.Log(netAnimator.animator.runtimeAnimatorController.animationClips[0].name);
+    }
+
+    [Server]
+    public bool TryAttack(GameObject target)
+    {
+        if(CanAttack())
+        {
+            SetTarget(target);
+            netAnimator.SetTrigger("attack");
+            return true;
         }
+
+        return false;
     }
 
     [Server]
     bool CanAttack()
     {
-        if((Time.time - timeSinceLastAttack) > attackSpeed)
+        if((Time.time - timeSinceLastAttack) > attackSpeedModifier)
         {
             timeSinceLastAttack = Time.time;
             return true;
@@ -45,7 +60,13 @@ public class Attack : NetworkBehaviour
 
         if(currentTarget.TryGetComponent<Health>(out var targetHealth))
         {
-            targetHealth.DamageHealth(attackDamage);
+            bool isDead = targetHealth.ReduceHealthBy(attackDamage);
+            if(isDead)
+            {
+                ClearTarget();
+                netAnimator.ResetTrigger("attack");
+            }
+                
         }
     }
 
@@ -58,7 +79,14 @@ public class Attack : NetworkBehaviour
     [Server]
     void ClearTarget()
     {
+        targeter.ClearTarget();
         currentTarget = null;
+    }
+
+    [Server]
+    void AttackFinished()
+    {
+        Debug.Log("Finished Attack");
     }
 
 }   

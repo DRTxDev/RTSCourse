@@ -2009,6 +2009,21 @@ PrefabInstance:
       propertyPath: _assetId
       value: 2598210383
       objectReference: {fileID: 0}
+    - target: {fileID: -1745356655753795284, guid: 3207208f0e2661147a8017d86fdc5f0c,
+        type: 3}
+      propertyPath: targeter
+      value: 
+      objectReference: {fileID: 5052158130382466280}
+    - target: {fileID: -1244360393435823539, guid: 3207208f0e2661147a8017d86fdc5f0c,
+        type: 3}
+      propertyPath: scalePrecision
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: -1244360393435823539, guid: 3207208f0e2661147a8017d86fdc5f0c,
+        type: 3}
+      propertyPath: positionPrecision
+      value: 0.0001
+      objectReference: {fileID: 0}
     - target: {fileID: 155500, guid: 3207208f0e2661147a8017d86fdc5f0c, type: 3}
       propertyPath: m_Name
       value: TT_HammerVar
@@ -2071,6 +2086,16 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3273380987735540671, guid: 3207208f0e2661147a8017d86fdc5f0c,
+        type: 3}
+      propertyPath: attackRange
+      value: 0.075
+      objectReference: {fileID: 0}
+    - target: {fileID: 3273380987735540671, guid: 3207208f0e2661147a8017d86fdc5f0c,
+        type: 3}
+      propertyPath: forceStrength
+      value: 0.00025
+      objectReference: {fileID: 0}
     - target: {fileID: 3470189832821671299, guid: 3207208f0e2661147a8017d86fdc5f0c,
         type: 3}
       propertyPath: m_RootOrder
@@ -2091,8 +2116,25 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 929
       objectReference: {fileID: 0}
+    - target: {fileID: 9098586058171244402, guid: 3207208f0e2661147a8017d86fdc5f0c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3207208f0e2661147a8017d86fdc5f0c, type: 3}
+--- !u!114 &5052158130382466280 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3775360070268125339, guid: 3207208f0e2661147a8017d86fdc5f0c,
+    type: 3}
+  m_PrefabInstance: {fileID: 8248372363424099443}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55edc6b42e664604e9e24065f7fde6e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8248372363424223723 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 408984, guid: 3207208f0e2661147a8017d86fdc5f0c,

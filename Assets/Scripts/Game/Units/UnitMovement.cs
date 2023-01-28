@@ -7,8 +7,6 @@ using UnityEngine.InputSystem;
 
 public class UnitMovement : NetworkBehaviour 
 {
-    [SerializeField] Animator animator;
-    [SerializeField] NavMeshAgent navAgent;
     [SerializeField] float baseStoppingDistance = 0.025f;
     [SerializeField] float turnSpeed = 5f;
 
@@ -22,6 +20,8 @@ public class UnitMovement : NetworkBehaviour
     [Header("Temp Attack Range")]
     [SerializeField] float attackRange = 0.1f;
 
+    NavMeshAgent navAgent;
+    NetworkAnimator netAnimator;
     Targeter targeter;
     Attack attack;
     Coroutine turnRoutine;
@@ -39,6 +39,8 @@ public class UnitMovement : NetworkBehaviour
 
     public override void OnStartServer()
     {
+        navAgent = GetComponent<NavMeshAgent>();
+        netAnimator = GetComponent<NetworkAnimator>();
         attack = GetComponent<Attack>();
         targeter = GetComponent<Targeter>();
         path = new NavMeshPath();
@@ -94,6 +96,15 @@ public class UnitMovement : NetworkBehaviour
     }
 
     [Server]
+    float GetStoppingDistance()
+    {
+        if(targeter.hasTarget)
+            return attackRange;
+        else
+            return baseStoppingDistance;
+    }
+
+    [Server]
     void BeginMove(Vector3 targetPosition)
     {
         navAgent.stoppingDistance = GetStoppingDistance();
@@ -104,15 +115,6 @@ public class UnitMovement : NetworkBehaviour
     }
 
     [Server]
-    float GetStoppingDistance()
-    {
-        if(targeter.hasTarget)
-            return attackRange;
-        else
-            return baseStoppingDistance;
-    }
-
-    [Server]
     IEnumerator CommitMove(Vector3 targetPosition)
     {
         float timeElapsed = 1;
@@ -120,13 +122,14 @@ public class UnitMovement : NetworkBehaviour
         float squaredDistanceToDestination;
         float squaredStoppingDistance = navAgent.stoppingDistance * navAgent.stoppingDistance;
         Vector3 moveDestination;
+        bool isTargeting = targeter.hasTarget;
 
-        while(true)
+        while(isTargeting == targeter.hasTarget)
         {
             moveDestination = targeter.hasTarget? target.transform.position : targetPosition;
             squaredDistanceToDestination = (transform.position - moveDestination).sqrMagnitude;
             timeElapsed += Time.deltaTime;
-            animator.SetFloat("speed", navAgent.velocity.magnitude);
+            netAnimator.animator.SetFloat("speed", navAgent.velocity.magnitude);
 
             if(squaredDistanceToDestination > squaredStoppingDistance)
             {
@@ -139,22 +142,30 @@ public class UnitMovement : NetworkBehaviour
 
             else if(targeter.hasTarget)
             {
-                attack.TryAttack(target);
                 transform.LookAt(target.transform);
-                //attackTarget
+
+                bool isAttacking = attack.TryAttack(target);
+
+                //wait until attack is finished to reduce overhead
             }
 
             else
             {
                 navAgent.ResetPath();
-                animator.SetFloat("speed", 0f);
+                netAnimator.animator.SetFloat("speed", 0f);
                 yield break;
             }
 
             transform.LookAt(transform.position + navAgent.velocity);
+
+            if(isRooted)
+                yield return new WaitWhile(()=> isRooted);
                 
             yield return null;
         }
+
+        if(!targeter.hasTarget)
+            navAgent.ResetPath();
     }
 
     //disabled. needs updating or deletion
@@ -264,6 +275,7 @@ public class UnitMovement : NetworkBehaviour
         navAgent.isStopped = false;
     }
 
+    [Server]
     IEnumerator StoreMoveAction(Vector3 position)
     {
         yield return new WaitUntil(()=> canMove);
@@ -273,6 +285,7 @@ public class UnitMovement : NetworkBehaviour
         CommitMove(position);
     }
 
+    [Server]
     void StopMovementCoroutines()
     {   
         if(moveRoutine is not null)
